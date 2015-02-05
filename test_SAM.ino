@@ -145,12 +145,21 @@ void SAM_tone_display(int stimDur,uint16_t frequence,int Vol){
 	   wave_data_length=stimDur/2; //give 2ms response time for each vol
 	   int Amp_value_data[wave_data_length];
 	   double data_time=0;
+           int modulated_vol;
 	   for (int m=0;m<wave_data_length;m++){
-	   		Amp_value_data[m] = sin(2*PI*carrier_wave_freq*m);
-	   		
-	   }
+	   		Amp_value_data[m] = base_intensity*sin(2*PI*carrier_wave_freq*data_time);
+	   		data_time+=0.002;
+	   }  //this loop is used to generate Amp for each data point
+		
 		SPI_TGM.tone_vol_rampup(rand_cloudy_tone[i].frequence,temp_vol);
-		delay(inter_delay);	
+			
+		for(int m=0;m<wave_data_length;m++){
+                   delay(1);
+                   modulated_vol=base_DB+Amp_value_data[m];
+                    //call the function here
+                   delay(1);
+                 }
+             //call the rampdown function
 
 }
 
